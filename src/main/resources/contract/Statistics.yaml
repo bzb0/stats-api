@@ -1,0 +1,29 @@
+---
+$schema: http://json-schema.org/draft-07/schema#
+title: Statistics
+description: Aggregated statistics for all ticks for a given or all instruments.
+type: object
+properties:
+  avg:
+    description: Average amount of all tick prices in the last 60 seconds.
+    type: number
+    minimum: 0.0
+  max:
+    description: Single highest tick price in the last 60 seconds.
+    type: number
+    minimum: 0.0
+  min:
+    description: Single lowest tick price in the last 60 seconds.
+    type: number
+    minimum: 0.0
+  count:
+    description: Total number of ticks happened in the last 60 seconds.
+    type: integer
+    format: int64
+    minimum: 0
+
+required:
+  - avg
+  - max
+  - min
+  - count

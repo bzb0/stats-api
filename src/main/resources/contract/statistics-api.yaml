@@ -1,0 +1,82 @@
+openapi: 3.0.0
+info:
+  title: Real-time Statistics API
+  description: Provides real-time instrument statistics (min, max, avg, count) in the last 60 seconds.
+  version: 1.0.0
+
+paths:
+  /ticks:
+    post:
+      tags:
+        - Statistics
+      summary: Stores the tick and updates the statistics for the given instrument identifier.
+      description: Stores the tick and updates the statistics for the given instrument identifier.
+      operationId: storeTick
+      requestBody:
+        description: The tick to be stored.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ./Tick.yaml
+      responses:
+        201:
+          description: The tick was successfully stored.
+        204:
+          description: The tick was not stored, as it is older than 60 seconds.
+        default:
+          description: JSON Problem response.
+          content:
+            application/problem+json:
+              schema:
+                $ref: ./ProblemDetails.yaml
+
+  /statistics:
+    get:
+      tags:
+        - Statistics
+      summary: Returns aggregated statistics for all ticks across all instruments in the last 60 seconds.
+      description: Returns aggregated statistics for all ticks across all instruments in the last 60 seconds.
+      operationId: getStatistics
+      responses:
+        200:
+          description: Aggregated statistics for all ticks across all instruments.
+          content:
+            application/json:
+              schema:
+                $ref: ./Statistics.yaml
+        default:
+          description: A default response for common HTTP error codes such as 400, 500.
+          content:
+            application/problem+json:
+              schema:
+                $ref: ./ProblemDetails.yaml
+
+  /statistics/{instrumentId}:
+    get:
+      tags:
+        - Statistics
+      summary: Returns aggregated statistics based on the ticks for a given instrument identifier in the last 60 seconds.
+      description: Returns aggregated statistics based on the ticks for a given instrument identifier in the last 60 seconds.
+      operationId: getStatisticsForInstrument
+      parameters:
+        - name: instrumentId
+          in: path
+          required: true
+          description: The financial instrument identifier.
+          schema:
+            type: string
+            minLength: 1
+      responses:
+        200:
+          description: Aggregated statistics based on the ticks for the given instrument.
+          content:
+            application/json:
+              schema:
+                $ref: ./Statistics.yaml
+        default:
+          description: A default response for common HTTP error codes such as 400, 500.
+          content:
+            application/problem+json:
+              schema:
+                $ref: ./ProblemDetails.yaml

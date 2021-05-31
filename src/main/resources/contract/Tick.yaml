@@ -1,0 +1,24 @@
+---
+$schema: http://json-schema.org/draft-07/schema#
+title: Tick
+description: Represent a minimum increment of an instrument fluctuation.
+type: object
+properties:
+  instrument:
+    description: A financial instrument identifier.
+    type: string
+    minLength: 1
+  price:
+    description: Current trade price of a financial instrument.
+    type: number
+    minimum: 0.0
+  timestamp:
+    description: Tick timestamp in milliseconds.
+    type: integer
+    format: int64
+    minimum: 0
+
+required:
+  - instrument
+  - price
+  - timestamp
